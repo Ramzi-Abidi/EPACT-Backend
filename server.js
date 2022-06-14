@@ -11,6 +11,8 @@ const Post = require("./models/postModel");
 const nodemailer = require("nodemailer");
 const multer = require("multer");
 const fs = require("fs");
+const commentRouter = require("./routers/commentRouter");
+
 
 dotenv.config();
 
@@ -151,6 +153,8 @@ app.use("/api/products", productRouter);
 app.use("/api/orders", orderRouter);
 app.use("/api/contactUs", contactRouter);
 app.use("/api/getOrders", getOrdersRouter);
+app.use("/api/comments", commentRouter);
+
 
 app.use((err, req, res, next) => {          //middleware fct for handling errors
     res.status(500).send({ message: err.message });

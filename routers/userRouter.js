@@ -37,23 +37,36 @@ userRouter.post('/signin', expressAsyncHandler(async (req, res) => {
 
 //signup route
 
-userRouter.post(
-  '/register',
-  expressAsyncHandler(async (req, res) => {
-    const user = new User({
+userRouter.post('/register', expressAsyncHandler(async (req, res) => {
+  console.log(req.body);
+  let user;
+
+  if (req.body.expertCheckBox === "on") {
+    user = new User({
+      name: req.body.name,
+      email: req.body.email,
+      password: bcrypt.hashSync(req.body.password, 8),
+      isExpert: true,
+      expertDomain: req.body.expertDomain
+    });
+  }
+  else {
+    user = new User({
       name: req.body.name,
       email: req.body.email,
       password: bcrypt.hashSync(req.body.password, 8),
     });
-    const createdUser = await user.save(); //The save() function is used to save the document to the database
-    res.send({
-      _id: createdUser._id,
-      name: createdUser.name,
-      email: createdUser.email,
-      isAdmin: createdUser.isAdmin,
-      token: generateToken(createdUser),
-    });
-  })
+  }
+  const createdUser = await user.save(); //The save() function is used to save the document to the database
+  res.send({
+    _id: createdUser._id,
+    name: createdUser.name,
+    email: createdUser.email,
+    isAdmin: createdUser.isAdmin,
+    isExpert:createdUser.isExpert,
+    token: generateToken(createdUser),
+  });
+})
 );
 
 //user route :
