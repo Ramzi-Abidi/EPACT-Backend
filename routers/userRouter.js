@@ -26,6 +26,8 @@ userRouter.post('/signin', expressAsyncHandler(async (req, res) => {
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
+        isExpert: user.isExpert,
+        expertDomain: user.expertDomain,
         token: generateToken(user),
       });
       return;
@@ -64,6 +66,7 @@ userRouter.post('/register', expressAsyncHandler(async (req, res) => {
     email: createdUser.email,
     isAdmin: createdUser.isAdmin,
     isExpert:createdUser.isExpert,
+    expertDomain:createdUser.expertDomain,
     token: generateToken(createdUser),
   });
 })
@@ -101,6 +104,7 @@ userRouter.put(
         name: updatedUser.name,
         email: updatedUser.email,
         isAdmin: updatedUser.isAdmin,
+        isExpert: updatedUser.isExpert,
         token: generateToken(updatedUser),
       });
     }

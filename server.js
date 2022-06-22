@@ -12,6 +12,7 @@ const nodemailer = require("nodemailer");
 const multer = require("multer");
 const fs = require("fs");
 const commentRouter = require("./routers/commentRouter");
+const replyRouter = require("./routers/replyRouter");
 
 
 dotenv.config();
@@ -19,6 +20,7 @@ dotenv.config();
 let app = express();
 const data = require("./data/data");
 const Product = require("./models/productModel");
+const Reply = require("./models/Reply");
 
 app.use(cors());
 app.use(express.json());
@@ -64,11 +66,13 @@ app.delete("/api/posts/:id", async (req, res) => {
     console.log(req.params.id);
 
     try {
+        const deleteManyReplies = await Reply.deleteMany({ postId: req.params.id });
+        const deleteManyComments = await Comment.deleteMany({ postId: req.params.id });
         const deletedTask = await Post.findOneAndDelete({ _id: req.params.id });
         if (deletedTask == null)
             res.status(404).json({ message: `No post with id ${req.params.id}` });
         else
-            res.status(200).json(deletedTask);
+            res.status(200).json({deletedTask});
 
     } catch (err) {
         res.status(500).json({ message: err });
@@ -154,6 +158,9 @@ app.use("/api/orders", orderRouter);
 app.use("/api/contactUs", contactRouter);
 app.use("/api/getOrders", getOrdersRouter);
 app.use("/api/comments", commentRouter);
+app.use("/api/deleteComment", commentRouter);
+
+app.use("/api/replies", replyRouter);
 
 
 app.use((err, req, res, next) => {          //middleware fct for handling errors
