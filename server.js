@@ -21,6 +21,7 @@ let app = express();
 const data = require("./data/data");
 const Product = require("./models/productModel");
 const Reply = require("./models/Reply");
+const Comment = require("./models/Comment");
 
 app.use(cors());
 app.use(express.json());
@@ -66,13 +67,13 @@ app.delete("/api/posts/:id", async (req, res) => {
     console.log(req.params.id);
 
     try {
+        const deletedTask = await Post.findOneAndDelete({ _id: req.params.id });
         const deleteManyReplies = await Reply.deleteMany({ postId: req.params.id });
         const deleteManyComments = await Comment.deleteMany({ postId: req.params.id });
-        const deletedTask = await Post.findOneAndDelete({ _id: req.params.id });
         if (deletedTask == null)
             res.status(404).json({ message: `No post with id ${req.params.id}` });
         else
-            res.status(200).json({deletedTask});
+            res.status(200).json({ deletedTask });
 
     } catch (err) {
         res.status(500).json({ message: err });

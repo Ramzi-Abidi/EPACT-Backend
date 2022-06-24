@@ -57,9 +57,9 @@ orderRouter.post('/', isAuth,
                         <li> Nom : ${req.body.shippingAddress.fullName} </li>
                         <li> Num Tel : ${req.body.numTel} </li>
                         <li> Email : ${req.body.email} </li>
-                        <li> Governorat : ${req.body.shippingAddress.country} </li>
-                        <li> Items : ${req.body.orderItems[0].name} * ${req.body.orderItems[0].qty}  </li>
-                        <li> subtotal : ${req.body.totalPrice} dt </li>
+                        <li> Pays : ${req.body.shippingAddress.country} </li>
+                        <li> Produits : ${req.body.orderItems[0].name} * ${req.body.orderItems[0].qty}  </li>
+                        <li> Total : ${req.body.totalPrice} dt </li>
                     `, // html body
                 });
             }
